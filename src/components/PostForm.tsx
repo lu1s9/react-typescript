@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import { createPost } from "../api/posts";
 import { usePostsContext } from "../hooks/usePostsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import axios from "axios";
 
 function PostForm() {
   const { dispatch } = usePostsContext();
+  const { state } = useAuthContext();
 
   type Inputs = {
     content: string;
@@ -19,8 +21,14 @@ function PostForm() {
   } = useForm<Inputs>();
 
   const onSubmit = handleSubmit(async (data) => {
+    if (!state.token) {
+      // TODO: Set error(you must be logged in)
+      return;
+    }
+
     try {
       const res = await createPost(data);
+      console.log(res);
       setValue("content", "");
       dispatch({ type: "CREATE_POST", payload: res.data });
     } catch (error) {
