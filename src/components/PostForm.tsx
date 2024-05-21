@@ -21,7 +21,7 @@ function PostForm() {
   } = useForm<Inputs>();
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!state.token) {
+    if (!state.user) {
       // TODO: Set error(you must be logged in)
       return;
     }
@@ -39,14 +39,13 @@ function PostForm() {
   });
   return (
     <div>
-      <h3>Add a new post</h3>
       <div>
         <form onSubmit={onSubmit}>
           <input
             type="text"
             {...register("content", { required: true })}
-            placeholder="Post"
-            className="p-2.5 rounded-sm mt-2 mb-5"
+            placeholder="What's on yout mind?"
+            className="p-2.5 rounded-sm mt-10 mb-5 w-full h-20 "
           />
           {errors.content && (
             <p className="text-red-500 p-2 rounded my-5 border-2 border-rose-600 bg-rose-300">
@@ -55,7 +54,7 @@ function PostForm() {
           )}
           <button
             type="submit"
-            className="bg-green-600 rounded p-2.5 cursor-pointer"
+            className="bg-green-600 rounded-xl p-2.5 cursor-pointer font-bold"
           >
             Post it
           </button>

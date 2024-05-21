@@ -10,7 +10,8 @@ function PostDetail({ post }: any) {
   const { state } = useAuthContext();
 
   const handleClick = async () => {
-    if (!state.token) {
+    if (!state.user) {
+      // TODO: Set error(you must be logged in)
       return;
     }
     try {
@@ -26,16 +27,21 @@ function PostDetail({ post }: any) {
 
   return (
     <div className="bg-white rounded-md mx-auto my-10 p-10 relative shadow-md">
-      <p>{post.content}</p>
       <p>
-        {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+        {post.userId.name} posted{" "}
+        <span>
+          {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+        </span>
       </p>
-      <span
-        onClick={handleClick}
-        className="absolute top-5 right-5 cursor-pointer rounded bg-slate-300 p-1"
-      >
-        Delete
-      </span>
+      <p>{post.content}</p>
+      {post.userId._id === state.user?.id && (
+        <span
+          onClick={handleClick}
+          className="absolute top-5 right-5 cursor-pointer rounded bg-slate-300 p-1"
+        >
+          Delete
+        </span>
+      )}
     </div>
   );
 }
