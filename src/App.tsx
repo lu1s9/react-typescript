@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import FriendsListPage from "./pages/FriendsListPage";
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 
@@ -15,15 +16,21 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={state.token ? <HomePage /> : <Navigate to="/login" />}
+            element={state.user ? <HomePage /> : <Navigate to="/login" />}
           />
           <Route
             path="/signup"
-            element={!state.token ? <SignupPage /> : <Navigate to="/" />}
+            element={!state.user ? <SignupPage /> : <Navigate to="/" />}
           />
           <Route
             path="/login"
-            element={!state.token ? <LoginPage /> : <Navigate to="/" />}
+            element={!state.user ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/friendsList"
+            element={
+              state.user ? <FriendsListPage /> : <Navigate to="/login" />
+            }
           />
         </Routes>
       </div>
