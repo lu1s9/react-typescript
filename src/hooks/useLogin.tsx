@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { loginRequest } from "../api/auth";
-import { User } from "../interfaces/interfaces";
 import axios from "axios";
 
 export const useLogin = () => {
@@ -9,13 +8,14 @@ export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const login = async (user: User) => {
+  const login = async (user: { email: string; password: string }) => {
     setErrors([]);
     setIsLoading(true);
 
     try {
       const res = await loginRequest(user);
       dispatch({ type: "LOGIN", payload: res.data });
+      localStorage.setItem("user", JSON.stringify(res.data));
       setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -8,6 +8,7 @@ export const useLogout = () => {
   const { dispatch: postsDispatch } = usePostsContext();
   const logout = () => {
     Cookies.remove("token");
+    localStorage.removeItem("user");
 
     dispatch({ type: "LOGOUT" });
     postsDispatch({ type: "SET_POSTS", payload: [] });
