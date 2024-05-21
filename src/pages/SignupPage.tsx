@@ -3,6 +3,7 @@ import { useSignup } from "../hooks/useSignup";
 
 type Inputs = {
   email: string;
+  name: string;
   password: string;
 };
 
@@ -38,6 +39,13 @@ function SignupPage() {
         {errors.password && (
           <p className="text-red-500">Password is required</p>
         )}
+        <input
+          type="text"
+          {...register("name", { required: true })}
+          placeholder="Name"
+          className="block w-full p-2.5 rounded-sm mb-5"
+        />
+        {errors.name && <p className="text-red-500">Name is required</p>}
         <button
           type="submit"
           className="bg-green-600 rounded p-2.5 cursor-pointer"

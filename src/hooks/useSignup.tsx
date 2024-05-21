@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { signupRequest } from "../api/auth";
-import { User } from "../interfaces/interfaces";
 import axios from "axios";
 
 export const useSignup = () => {
@@ -9,13 +8,18 @@ export const useSignup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async (user: User) => {
+  const signup = async (user: {
+    email: string;
+    password: string;
+    name: string;
+  }) => {
     setErrors([]);
     setIsLoading(true);
 
     try {
       const res = await signupRequest(user);
       dispatch({ type: "LOGIN", payload: res.data });
+      localStorage.setItem("user", JSON.stringify(res.data));
       setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
