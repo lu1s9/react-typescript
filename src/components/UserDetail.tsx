@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { addFriend } from "../api/users";
+import { useUsersContext } from "../hooks/useUsersContext";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function UserDetail({ user }: any) {
-  //   const { state: UsersState, dispatch } = useUsersContext();
   const { state } = useAuthContext();
+  const { dispatch } = useUsersContext();
 
   const handleClick = async () => {
     if (!state.user) {
@@ -14,8 +15,9 @@ function UserDetail({ user }: any) {
     }
 
     try {
-      const res = await addFriend(user._id, `${state.user?.id}`);
+      const res = await addFriend(`${state.user?.id}`, user._id);
       console.log(res);
+      dispatch({ type: "DELETE_USER", payload: res.data });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error);

@@ -1,4 +1,5 @@
 import { createContext, useReducer, Dispatch } from "react";
+import { IFriendship } from "./FrienshipContext";
 
 export interface props {
   children: JSX.Element | JSX.Element[];
@@ -29,7 +30,7 @@ export interface User {
 export type USERACTIONTYPE =
   | { type: "SET_USERS"; payload: IUser[] }
   | { type: "CREATE_USER"; payload: IUser }
-  | { type: "DELETE_USER"; payload: IUser };
+  | { type: "DELETE_USER"; payload: IFriendship };
 
 const initialState: UserState = {
   users: [],
@@ -48,7 +49,7 @@ const usersReducer = (state: UserState, action: USERACTIONTYPE): UserState => {
 
     case "DELETE_USER":
       return {
-        users: state.users.filter((p) => p._id !== action.payload._id),
+        users: state.users.filter((p) => p._id !== action.payload.user2_id),
       };
 
     default:
