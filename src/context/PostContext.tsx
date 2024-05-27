@@ -16,6 +16,8 @@ export interface IPost {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  likes: [string];
+  comments: [string];
 }
 
 export interface PostState {

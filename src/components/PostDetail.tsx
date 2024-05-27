@@ -1,4 +1,4 @@
-import { deletePost } from "../api/posts";
+import { deletePost, likePost } from "../api/posts";
 import { usePostsContext } from "../hooks/usePostsContext";
 import axios from "axios";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
@@ -25,6 +25,22 @@ function PostDetail({ post }: any) {
     }
   };
 
+  const handleLikeClick = async () => {
+    if (!state.user) {
+      // TODO: Set error(you must be logged in)
+      return;
+    }
+    try {
+      const res = await likePost(post._id);
+      console.log(res);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+      }
+    }
+  };
+
+  const countLikes = post.likes.length;
   return (
     <div className="bg-white rounded-md mx-auto my-10 p-10 relative shadow-md">
       <p>
@@ -42,6 +58,13 @@ function PostDetail({ post }: any) {
           Delete
         </span>
       )}
+      <span
+        onClick={handleLikeClick}
+        className="absolute top-5 right-24 cursor-pointer rounded bg-slate-300 p-1"
+      >
+        Like
+      </span>
+      <p>{countLikes} - Likes</p>
     </div>
   );
 }
