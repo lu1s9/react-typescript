@@ -16,8 +16,13 @@ export interface IPost {
   userId: string;
   createdAt: string;
   updatedAt: string;
-  likes: [string];
+  likes: string[];
   comments: [string];
+}
+
+export interface ILike {
+  _id: string;
+  likes: string[];
 }
 
 export interface PostState {
@@ -27,7 +32,8 @@ export interface PostState {
 export type ACTIONTYPE =
   | { type: "SET_POSTS"; payload: IPost[] }
   | { type: "CREATE_POST"; payload: IPost }
-  | { type: "DELETE_POST"; payload: IPost };
+  | { type: "DELETE_POST"; payload: IPost }
+  | { type: "TOGGLE_LIKE"; payload: ILike };
 
 export interface PostContextType {
   state: PostState;
@@ -48,6 +54,14 @@ const postsReducer = (state: PostState, action: ACTIONTYPE): PostState => {
     case "DELETE_POST":
       return {
         posts: state.posts.filter((p) => p._id !== action.payload._id),
+      };
+    case "TOGGLE_LIKE":
+      return {
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id
+            ? { ...post, likes: action.payload.likes }
+            : post
+        ),
       };
     default:
       return state;

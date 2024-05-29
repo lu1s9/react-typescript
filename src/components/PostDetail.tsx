@@ -33,6 +33,7 @@ function PostDetail({ post }: any) {
     try {
       const res = await likePost(post._id);
       console.log(res);
+      dispatch({ type: "TOGGLE_LIKE", payload: res.data });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error);
@@ -40,6 +41,7 @@ function PostDetail({ post }: any) {
     }
   };
 
+  const postLiked = post.likes.includes(state.user?.id);
   const countLikes = post.likes.length;
   return (
     <div className="bg-white rounded-md mx-auto my-10 p-10 relative shadow-md">
@@ -62,7 +64,7 @@ function PostDetail({ post }: any) {
         onClick={handleLikeClick}
         className="absolute top-5 right-24 cursor-pointer rounded bg-slate-300 p-1"
       >
-        Like
+        {postLiked ? "Dislike" : "Like"}
       </span>
       <p>{countLikes} - Likes</p>
     </div>
